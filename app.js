@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
 	cors({
-		origin:["http://localhost:5173", "https://zeigler-ecommerce.vercel.app"],
+		origin:["http://localhost:5173", "https://zeigler-ecommerce.vercel.app","https://zeigler-ecommerce-2a15cr645-zoheb799s-projects.vercel.app"],
 		credentials: true,
 	})
 );
