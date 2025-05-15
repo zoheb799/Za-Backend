@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Optional: Add these if needed
+dist/
+build/
+*.log
+.DS_Store
