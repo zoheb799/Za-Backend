@@ -59,15 +59,19 @@ export const loginUser = asyncHandler(async (req, res) => {
         const { password: pass, ...rest } = user._doc;
 
         res.cookie("accessToken", accessToken, {
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            httpOnly: true,
+            sameSite: "None",            // ✅ Allow cross-origin cookies
+            secure: true,                // ✅ Required for SameSite=None
+          })
+          .cookie("refreshToken", refreshToken, {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,
-        })
-        .cookie("refreshToken", refreshToken, {
-            maxAge: 24 * 60 * 60 * 1000,
-            httpOnly: true,
-        })
-        .status(200)
-        .json(new apiResponse(200, rest, "Login successful"));
+            sameSite: "None",            // ✅
+            secure: true,                // ✅
+          })
+          .status(200)
+          .json(new apiResponse(200, rest, "Login successful"));
     } catch (error) {
         console.log(error.message);
         throw new errorHandler(500, error.message);
@@ -78,7 +82,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 export const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(req.user._id, { refreshToken: null });
 
-    const options = { httpOnly: true, secure: true };
+    const options = { httpOnly: true, sameSite: "None", secure: true };
 
     return res
         .status(200)
